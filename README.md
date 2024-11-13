@@ -63,21 +63,14 @@ Whenever the scheduler data is changed then the JSON-structure for the switchpro
 ****
 NR Flow:
 
+![alt text](image-2.png)
 
 
-**Examples for lovelace:
+
+View on lovelace:
 
 ![alt text](image.png)
 
 ![alt text](image-1.png)
-
-
-
-Examples for lovelace:
-
-
-
-
-
 
 
