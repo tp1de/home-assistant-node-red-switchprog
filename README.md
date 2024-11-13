@@ -1,6 +1,23 @@
 This node-red flow is able to read and write EMS+ switchPrograms from the ems-esp gateway.
 
+The required ems-esp firmware is in beta testing status and can be downloaded from:
+https://github.com/MichaelDvP/EMS-ESP32/releases  (please use the test builds)
 
+EMS+ thermostats (e.g. RC310) have different switchPrograms for each heating circuits (select.thermostat_hc1_program)
+and each program can be changed for different modes.
+The entity select.thermostat_hc1_switchprogmode might be available for doing this. 
+The modes "Level" or "Absolute" can be selected. 
+"Level" defines switch between "eco" and "comfort" and "Absolute" defines temneratures. 
+
+The combination of active program and switchprogmode defines the switchProgram read for each heating circuit.
+DHW (warm water buffer and circulation pump) have only "Levels".
+
+The testbuild creates in the mqtt broker a topic ems-esp/switchprog wich contains all switchPrograms within one JSON.
+Home Assistant Discovery is not available. This flow creates HA schedules and lovelace cards to edit the thermostat time programs.
+The HACS components scheduler-component and scheduler-card are used for this.
+
+This version allows to select schedules for "daily" "workday" or "weekend".
+Different schedules for each day are not supported. 
 
 
 ***
@@ -19,6 +36,7 @@ The following technical prerequisites are needed: (before loading the node-red f
     Add the following lines: 
     - input_number: !include input_number.yaml
     - input_select: !include input_select.yaml
+    and copy (and adjust) the yaml files into the ha config directory.
 
 ***
 
