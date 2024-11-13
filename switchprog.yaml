@@ -1,0 +1,19 @@
+- parameters:
+
+  - hc1_days: ["workday","weekend"]
+  - hc1_names: ["HC1 Weekday", "HC1 Weekend"]
+
+  - hc2_days: ["workday", "weekend"]
+  - hc2_names: ["HC2 Weekday", "HC2 Weekend"]
+    
+  - hc3_days: []
+  - hc3_names: []
+   
+  - hc4_days: []
+  - hc4_names: []
+
+  - dhw_days: ["workday", "weekend"]
+  - dhw_names: ["DHW Weekday", "DHW Weekend"]  
+
+  - dhwcp_days: ["daily"]
+  - dhwcp_names: ["DHW CP"]

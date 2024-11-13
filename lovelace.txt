@@ -1,0 +1,80 @@
+
+***** Card for hc1 with German titles
+
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: select.thermostat_hc1_mode
+      - entity: select.thermostat_hc1_program
+      - entity: select.thermostat_hc1_switchprogmode
+  - type: custom:scheduler-card
+    title: Zeitsteuerung
+    sort_by: relative_time
+    show_header_toggle: false
+    include:
+      - input_select.hc1_sp_modes
+      - input_number.hc1_sp_temp
+    show_add_button: false
+    discover_existing: false
+    exclude: []
+    time_step: 15
+title: Heizkörper
+
+
+
+***** Card for hc2 with German titles
+
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: select.thermostat_hc2_mode
+      - entity: select.thermostat_hc2_program
+      - entity: select.thermostat_hc2_switchprogmode
+        name: HK2 Schaltmodus
+  - type: custom:scheduler-card
+    title: Zeitsteuerung
+    sort_by: relative_time
+    show_header_toggle: false
+    include:
+      - input_select.hc2_sp_modes
+      - input_number.hc2_sp_temp
+    show_add_button: false
+    discover_existing: false
+    exclude: []
+    time_step: 15
+    customize:
+      climate.thermostat_hc2:
+        exclude_actions:
+          - auto
+          - "off"
+title: Fußbodenheizung
+
+
+
+***** Card for dhw with German titles
+
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: select.thermostat_dhw_mode
+      - entity: select.thermostat_dhw_circmode
+    show_header_toggle: false
+    state_color: false
+  - type: custom:scheduler-card
+    title: Zeitsteuerung
+    sort_by: relative_time
+    show_header_toggle: false
+    include:
+      - input_select.dhw_sp_modes
+      - input_select.dhw_cp_sp_modes
+    exclude: []
+    show_add_button: false
+    discover_existing: false
+    time_step: 15
+title: Warmwasser Speicher
+
+
+
