@@ -44,8 +44,8 @@ The following technical prerequisites are needed: (before loading the node-red f
 
 ***
 
-When all this these prerequisites 1-6 are done, then zhe flow can be imported from flownr.txt
-You then need to adjust homeassistant and mqtt broker/server data.
+When all this these prerequisites 1-6 are done, then the flow can be imported from flownr.txt
+You then need to adjust homeassistant server and mqtt broker/server data.
 
 
 ***
@@ -65,8 +65,7 @@ NR Flow:
 
 ![alt text](image-2.png)
 
-
-
+***
 View on lovelace:
 
 ![alt text](image.png)
