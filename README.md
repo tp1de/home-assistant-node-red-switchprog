@@ -73,4 +73,5 @@ View on lovelace:
 
 ![alt text](image-1.png)
 
-
+The shown switch (on/off) is not used and does not have any effect.
+Please do not change the days in Lovelace. This has to be done in the switchprog.yaml file !
