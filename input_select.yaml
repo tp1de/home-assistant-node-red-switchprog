@@ -1,0 +1,35 @@
+
+# heating circuits modes - please adjust number of hc's
+
+    hc1_sp_modes:
+      name: hc1_sp_modes
+      options:
+        - eco
+        - comfort
+      icon: mdi:auto-mode
+
+    hc2_sp_modes:
+      name: hc2_sp_modes
+      options:
+        - eco
+        - comfort
+      icon: mdi:auto-mode
+
+# warm water tank - if available
+
+    dhw_sp_modes:
+      name: dhw_sp_modes
+      options:
+        - off
+        - eco
+        - high
+      icon: mdi:auto-mode
+
+# warm water circulation pump - if installed
+
+    dhw_cp_sp_modes:
+      name: dhw_cp_sp_modes
+      options:
+        - off
+        - on
+      icon: mdi:autorenew
