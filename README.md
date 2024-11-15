@@ -9,7 +9,7 @@ EMS+ thermostats (e.g. RC310) have different switchPrograms for each heating cir
 and each program can be changed for different modes.
 The entity select.thermostat_hc1_switchprogmode might be available for doing this. 
 The modes "Level" or "Absolute" can be selected. 
-"Level" defines switch between "eco" and "comfort" and "Absolute" defines temneratures. 
+"Level" defines switch between "eco" and "comfort" and "Absolute" defines temperatures. 
 
 The combination of active program and switchprogmode defines the switchProgram read for each heating circuit.
 DHW (warm water buffer and circulation pump) have only "Levels".
