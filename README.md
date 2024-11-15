@@ -18,6 +18,8 @@ The testbuild creates in the mqtt broker a topic ems-esp/switchprog wich contain
 Home Assistant Discovery is not available. This flow creates HA schedules and lovelace cards to edit the thermostat time programs.
 The HACS components scheduler-component and scheduler-card are used for this.
 
+**Please be aware that it takes up to one minute when programm or switchprogmode is changed until a new update is send by ems-esp and changes are seen**
+
 This version allows to select schedules for "daily" "workday" or "weekend".
 Different schedules for each day are not supported. 
 
