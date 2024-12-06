@@ -3,7 +3,7 @@
         "id": "ec85190199f8db30",
         "type": "tab",
         "label": "EMS switchPrograms",
-        "disabled": true,
+        "disabled": false,
         "info": "",
         "env": []
     },
@@ -65,7 +65,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
+        "x": 840,
         "y": 260,
         "wires": [
             [
@@ -116,7 +116,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 810,
+        "x": 850,
         "y": 200,
         "wires": [
             [
@@ -174,26 +174,6 @@
         ]
     },
     {
-        "id": "2012b42e55e21f33",
-        "type": "function",
-        "z": "ec85190199f8db30",
-        "name": "read schedule and prepare updates for EMS-ESP",
-        "func": "let hc = msg.hc;\n\nnode.status({ fill: \"green\", shape: \"ring\", text: hc  });\n\nlet r,d;\nlet mode = \"level\";\n\n\nlet times_old = msg.data.new_state.attributes.timeslots;\nlet actions_old = msg.data.new_state.attributes.actions;\n\nlet times = msg.data.new_state.attributes.timeslots;\nlet actions = msg.data.new_state.attributes.actions;\n\nswitch (actions[0].service) {\n    case \"climate.set_temperature\": mode = \"absolute1\";\n    case \"input_number.set_value\": mode = \"absolute2\";\n}\n\nlet start = 0;\nlet end = 0;\nlet weekdays = msg.data.new_state.attributes.weekdays[0];\n\nif (weekdays == \"daily\") {start = 0;end=7};\nif (weekdays == \"workday\") {start = 0;end=5};\nif (weekdays == \"weekend\") {start = 5;end=7};\n\nlet data = [];\nd = {};\n\nmsg.topic = \"ems-esp/thermostat/\"+hc+\"/switchprog\";\nif (hc == \"dhw_cp\") msg.topic = \"ems-esp/thermostat/dhw/circswitchprog\";\n\nfor (let i = start; i < end; i++) {\n    for (let ii = 1; ii < actions.length; ii++) {\n        if (mode == \"absolute1\") r = actions[ii].data.temperature;\n        if (mode == \"absolute2\") r = actions[ii].data.value;\n        if (mode == \"level\") r = actions[ii].data.option;\n\n        if (mode == \"level\") data.push(\n            {\n                day: i, time: times[ii].substring(0, 5),\n                mode: r, no: ii-1\n            });\n        else data.push(\n            {\n                day: i, time: times[ii].substring(0, 5),\n                temp: r, no: ii-1\n            });\n    }\n}\n\nmsg.payload = JSON.stringify(data);\nreturn msg;\n\n\nasync function sleep(ms) {\n    return new Promise(resolve => setTimeout(resolve, ms));\n}\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 730,
-        "y": 360,
-        "wires": [
-            [
-                "2d2bd034ce279077"
-            ]
-        ]
-    },
-    {
         "id": "2d2bd034ce279077",
         "type": "mqtt out",
         "z": "ec85190199f8db30",
@@ -216,18 +196,18 @@
         "type": "function",
         "z": "ec85190199f8db30",
         "name": "changed?",
-        "func": "let hc = \"???\";\nlet entity = msg.data.new_state.attributes.entities[0];\n\nswitch (entity) {\n    case \"input_select.hc1_sp_modes\": hc = \"hc1\";break;\n    case \"input_select.hc2_sp_modes\": hc = \"hc2\";break;\n    case \"input_select.hc3_sp_modes\": hc = \"hc3\";break;\n    case \"input_select.hc4_sp_modes\": hc = \"hc4\";break;\n\n    case \"input_number.hc1_sp_temp\": hc = \"hc1\"; break;\n    case \"input_number.hc2_sp_temp\": hc = \"hc2\"; break;\n    case \"input_number.hc3_sp_temp\": hc = \"hc3\"; break;\n    case \"input_number.hc4_sp_temp\": hc = \"hc4\"; break;\n\n    case \"input_select.dhw_sp_modes\": hc = \"dhw\"; break;\n    case \"input_select.dhw_cp_sp_modes\": hc = \"dhw_cp\"; break;\n\n}\n\nmsg.hc = hc;\n//node.status({ fill: \"green\", shape: \"ring\", text: hc + \" \" +entity });\n\ntry {\nlet times_old = msg.data.old_state.attributes.timeslots;\nlet actions_old = msg.data.old_state.attributes.actions;\n\nlet times = msg.data.new_state.attributes.timeslots;\nlet actions = msg.data.new_state.attributes.actions;\n\nlet changed = false;\nif (JSON.stringify(times_old) != JSON.stringify(times)) changed = true;\nif (JSON.stringify(actions_old) != JSON.stringify(actions)) changed = true;\n\nnode.status({ fill: \"green\", shape: \"ring\", text: hc+ \" changed: \"+changed});\nif (changed == true) node.send(msg);\n} catch(e) {}",
+        "func": "let hc = \"???\";\nlet entity = msg.data.new_state.attributes.entities[0];\n\nswitch (entity) {\n    case \"input_select.hc1_sp_modes\": hc = \"hc1\";break;\n    case \"input_select.hc2_sp_modes\": hc = \"hc2\";break;\n    case \"input_select.hc3_sp_modes\": hc = \"hc3\";break;\n    case \"input_select.hc4_sp_modes\": hc = \"hc4\";break;\n\n    case \"input_number.hc1_sp_temp\": hc = \"hc1\"; break;\n    case \"input_number.hc2_sp_temp\": hc = \"hc2\"; break;\n    case \"input_number.hc3_sp_temp\": hc = \"hc3\"; break;\n    case \"input_number.hc4_sp_temp\": hc = \"hc4\"; break;\n\n    case \"input_select.dhw_sp_modes\": hc = \"dhw\"; break;\n    case \"input_select.dhw_cp_sp_modes\": hc = \"dhw_cp\"; break;\n\n}\n\nmsg.hc = hc;\n//node.status({ fill: \"green\", shape: \"ring\", text: hc + \" \" +entity });\n\ntry {\nlet times_old = msg.data.old_state.attributes.timeslots;\nlet actions_old = msg.data.old_state.attributes.actions;\nlet service_old = msg.data.old_state.attributes.actions[0].service;\n\nlet times = msg.data.new_state.attributes.timeslots;\nlet actions = msg.data.new_state.attributes.actions;\nlet service = msg.data.new_state.attributes.actions[0].service;\n\nlet changed = false;\nif (JSON.stringify(times_old) != JSON.stringify(times)) changed = true;\nif (JSON.stringify(actions_old) != JSON.stringify(actions)) changed = true;\nif (service_old != service) changed = false;\n\n\nnode.status({ fill: \"green\", shape: \"ring\", text: hc+ \" changed: \"+changed});\n\nif (changed == true) node.send(msg);\n} catch(e) {}",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 460,
+        "x": 480,
         "y": 360,
         "wires": [
             [
-                "2012b42e55e21f33"
+                "9ff25de7d784a2bb"
             ]
         ]
     },
@@ -379,10 +359,30 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 780,
+        "x": 740,
         "y": 100,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "9ff25de7d784a2bb",
+        "type": "function",
+        "z": "ec85190199f8db30",
+        "name": "read schedule and prepare updates for EMS-ESP",
+        "func": "let hc = msg.hc;\n\nnode.status({ fill: \"green\", shape: \"ring\", text: hc  });\n\nlet r,d;\nlet mode = \"level\";\n\n\nlet times_old = msg.data.new_state.attributes.timeslots;\nlet actions_old = msg.data.new_state.attributes.actions;\n\nlet times = msg.data.new_state.attributes.timeslots;\nlet actions = msg.data.new_state.attributes.actions;\n\nswitch (actions[0].service) {\n    case \"climate.set_temperature\": mode = \"absolute1\";\n    case \"input_number.set_value\": mode = \"absolute2\";\n}\n\nlet start = 0;\nlet end = 0;\nlet weekdays = msg.data.new_state.attributes.weekdays[0];\n\nif (weekdays == \"daily\") {start = 0;end=7};\nif (weekdays == \"workday\") {start = 0;end=5};\nif (weekdays == \"weekend\") {start = 5;end=7};\n\nlet data = [];\nd = {};\n\nmsg.topic = \"ems-esp/thermostat/\"+hc+\"/switchprog\";\nif (hc == \"dhw_cp\") msg.topic = \"ems-esp/thermostat/dhw/circswitchprog\";\n\nfor (let i = start; i < end; i++) {\n    for (let ii = 1; ii < actions.length; ii++) {\n        if (mode == \"absolute1\") r = actions[ii].data.temperature;\n        if (mode == \"absolute2\") r = actions[ii].data.value;\n        if (mode == \"level\") r = actions[ii].data.option;\n\n        if (mode == \"level\") data.push(\n            {\n                day: i, time: times[ii].substring(0, 5),\n                mode: r, no: ii-1\n            });\n        else data.push(\n            {\n                day: i, time: times[ii].substring(0, 5),\n                temp: r, no: ii-1\n            });\n    }\n}\n\nmsg.payload = JSON.stringify(data);\nnode.send(msg);\nawait sleep(10000);\nnode.send(msg);\nawait sleep(20000);\nreturn msg;\n\n\nasync function sleep(ms) {\n    return new Promise(resolve => setTimeout(resolve, ms));\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 360,
+        "wires": [
+            [
+                "2d2bd034ce279077"
+            ]
         ]
     },
     {
